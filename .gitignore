@@ -1,0 +1,24 @@
+# Archivos de Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build
+bin/
+obj/
+
+# Paquetes de NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# Configuración temporal
+*.vsidx
+*.vscode/
+*.log
+
+# Archivos de publicación
+*.Publish.xml
