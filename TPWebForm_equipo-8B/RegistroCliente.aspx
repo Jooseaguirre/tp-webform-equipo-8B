@@ -57,6 +57,15 @@
                 <div class="invalid-feedback">Este campo es obligatorio.</div>
             </div>
 
+            <div class="form-check mb-3">
+                <input type="checkbox" id="chkTerminosHtml" class="form-check-input" />
+                <label for="chkTerminosHtml" class="form-check-label">Acepto los términos y condiciones.</label>
+            </div>
+
+
+
+
+
             <div class="d-grid mt-4">
                 <asp:Button ID="btnParticipar" runat="server" Text="🎉 ¡Participar!" CssClass="btn btn-success btn-lg" OnClick="btnParticipar_Click" />
             </div>
