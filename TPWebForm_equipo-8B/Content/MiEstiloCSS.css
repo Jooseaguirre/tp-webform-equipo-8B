@@ -1,0 +1,50 @@
+﻿body {
+    background-color: #C7C7C7;
+}
+
+
+/*-------------INICIO------------------------------------------------*/
+/* Fondo general oscuro y centrado */
+.inicio {
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+/* Recuadro claro con animación */
+.inicio-bg {
+    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título destacado */
+.titulo-inicio {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+/* Botón personalizado */
+.btn-canjear {
+    font-size: 1.2rem;
+    padding: 12px 24px;
+}

@@ -35,5 +35,43 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
+
+       
+
+        //Listar las imagenes del articulo dentro de la misma tarjeta
+        public List<ArticuloConImagenes> ListarAgrupado()
+        {
+            List<ArticuloConImagenes> agrupados = new List<ArticuloConImagenes>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IdArticulo, ImagenUrl FROM Imagenes ORDER BY IdArticulo");
+                datos.ejecutarLectura();
+
+                Dictionary<int, ArticuloConImagenes> mapa = new Dictionary<int, ArticuloConImagenes>();
+
+                while (datos.Lector.Read())
+                {
+                    int id = (int)datos.Lector["IdArticulo"];
+                    string url = datos.Lector["ImagenUrl"].ToString();
+
+                    if (!mapa.ContainsKey(id))
+                        mapa[id] = new ArticuloConImagenes { IdArticulo = id, UrlsImagenes = new List<string>() };
+
+                    mapa[id].UrlsImagenes.Add(url);
+                }
+
+                agrupados = mapa.Values.ToList();
+                return agrupados;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+
     }
 }
