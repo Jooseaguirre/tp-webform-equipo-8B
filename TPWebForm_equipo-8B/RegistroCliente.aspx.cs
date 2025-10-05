@@ -231,6 +231,21 @@ namespace TPWebForm_equipo_8B
                     voucherNegocio.AsociarCliente(codigoVoucher, idInsertado);
                     voucherNegocio.AsociarArticulo(codigoVoucher, idArticulo);
 
+                    // Enviar email
+                    EmailService emailService = new EmailService();
+
+                    string nombreCliente = txtNombre.Text.Trim();
+                    string cuerpo = $"<h1>¡Felicitaciones, {nombreCliente}!</h1>" +
+                                    $"<h2>¡Sumaste una chance para ganar!</h2>" +
+                                    "<p>Segui participando y sumando chances hasta el 28/02/2027.</p>";
+
+                    emailService.armarCorreo(
+                        txtEmail.Text,
+                        "Registro exitoso en Promo Ganá",
+                        cuerpo
+                    );
+                    emailService.enviarEmail();
+
                     lblMensaje.CssClass = "text-success d-block mt-3 text-center";
                     lblMensaje.Text = "Cliente registrado correctamente.";
 
