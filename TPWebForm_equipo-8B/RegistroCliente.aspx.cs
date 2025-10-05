@@ -14,17 +14,54 @@ namespace TPWebForm_equipo_8B
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                if (Session["Voucher"] == null)
+                {
+                    Response.Redirect("LoginVoucher.aspx");
+                    return;
+                }
 
+                if (Request.QueryString["premio"] == null)
+                {
+                    lblMensaje.Text = "No se ha elegido un premio.";
+                }
+            }
         }
 
+        protected void txtDNI_TextChanged(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtDNI.Text))
+            {
+                ClienteNegocio negocio = new ClienteNegocio();
+                Cliente cli = negocio.BuscarPorDocumento(txtDNI.Text);
 
+                if (cli != null)
+                {
+                    // Auto completar campos
+                    txtNombre.Text = cli.Nombre;
+                    txtApellido.Text = cli.Apellido;
+                    txtEmail.Text = cli.Email;
+                    txtDireccion.Text = cli.Direccion;
+                    txtCiudad.Text = cli.Ciudad;
+                    txtCP.Text = cli.CP.ToString();
 
+                    lblMensaje.CssClass = "text-info d-block mt-3 text-center";
+                    lblMensaje.Text = "Se encontraron datos existentes y fueron completados automáticamente.";
+                }
+                else
+                {
+                    lblMensaje.Text = "";
+                }
+            }
+        }
 
         protected void btnParticipar_Click(object sender, EventArgs e)
         {
             //VALIDACIONES DE LOS CAMPOS DEL FORMULARIO DE REGISTRO!!!
             bool valido = true;
             LimpiarValidacion();
+            lblMensaje.Text = ""; 
 
             // DNI
             if (string.IsNullOrWhiteSpace(txtDNI.Text))
@@ -140,13 +177,16 @@ namespace TPWebForm_equipo_8B
             }
 
             // Código Postal
-            if (string.IsNullOrWhiteSpace(txtCP.Text) || !Regex.IsMatch(txtCP.Text, @"^([A-Za-z]\d{4}[A-Za-z]{0,3}|\d{4,5})$"))
+            if (string.IsNullOrWhiteSpace(txtCP.Text) || !Regex.IsMatch(txtCP.Text, @"^\d{4,5}$"))
             {
                 MarcarError(txtCP);
                 valido = false;
             }
             else
+            {
                 MarcarOk(txtCP);
+            }
+
 
             // Checkbox de términos
             if (!chkTerminos.Checked)
@@ -164,12 +204,46 @@ namespace TPWebForm_equipo_8B
                 return;
             }
 
-            // Si todo ok
             if (valido)
             {
-                lblMensaje.CssClass = "text-success d-block mt-3 text-center";
-                lblMensaje.Text = "Formulario validado correctamente";
-                Response.Redirect("RegistroExitoso.aspx");
+                Cliente nuevoCliente = new Cliente()
+                {
+                    Documento = txtDNI.Text.Trim(),
+                    Nombre = txtNombre.Text.Trim(),
+                    Apellido = txtApellido.Text.Trim(),
+                    Email = txtEmail.Text.Trim(),
+                    Direccion = txtDireccion.Text.Trim(),
+                    Ciudad = txtCiudad.Text.Trim(),
+                    CP = int.Parse(txtCP.Text.Trim())
+                };
+
+                ClienteNegocio negocio = new ClienteNegocio();
+                int idInsertado = negocio.Insertar(nuevoCliente);
+
+                if (idInsertado > 0)
+                {
+                    VoucherNegocio voucherNegocio = new VoucherNegocio();
+
+                    string codigoVoucher = Session["Voucher"].ToString();
+                    int idArticulo = int.Parse(Request.QueryString["premio"]);
+
+                    // Asociar cliente y artículo al voucher
+                    voucherNegocio.AsociarCliente(codigoVoucher, idInsertado);
+                    voucherNegocio.AsociarArticulo(codigoVoucher, idArticulo);
+
+                    lblMensaje.CssClass = "text-success d-block mt-3 text-center";
+                    lblMensaje.Text = "Cliente registrado correctamente.";
+
+                    Response.Redirect("RegistroExitoso.aspx");
+
+                    // Limpiar session
+                    Session.Remove("Voucher");
+                }
+                else
+                {
+                    lblMensaje.CssClass = "text-danger d-block mt-3 text-center";
+                    lblMensaje.Text = "Error al guardar los datos. Intentá nuevamente.";
+                }
             }
 
         }

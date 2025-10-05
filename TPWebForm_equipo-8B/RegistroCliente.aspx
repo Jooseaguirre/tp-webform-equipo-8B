@@ -11,7 +11,7 @@
 
             <div class="mb-3">
                 <asp:Label ID="lblDNI" runat="server" AssociatedControlID="txtDNI" Text="DNI:" CssClass="form-label fw-semibold" />
-                <asp:TextBox ID="txtDNI" runat="server" CssClass="form-control" placeholder="Ej: 40123456" />
+                <asp:TextBox ID="txtDNI" runat="server" AutoPostBack="true" OnTextChanged="txtDNI_TextChanged" CssClass="form-control" placeholder="Ej: 40123456" />
                 <asp:Label ID="lblErrorDNI" runat="server" CssClass="invalid-feedback"></asp:Label>
             </div>
 

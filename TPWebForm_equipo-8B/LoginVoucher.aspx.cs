@@ -38,6 +38,7 @@ namespace TPWebForm_equipo_8B
                 else
                 {
                     // Voucher válido y no canjeado
+                    Session["Voucher"] = codigoVoucher;
                     Response.Redirect("ElegirPremio.aspx?codigo=" + codigoVoucher);
                 }
             }
