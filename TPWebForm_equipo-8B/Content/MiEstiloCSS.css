@@ -48,3 +48,38 @@
     font-size: 1.2rem;
     padding: 12px 24px;
 }
+
+/* Validación del form */
+/* Campo con error */
+.input-error {
+    border: 2px solid #e63946; /* rojo */
+    background-color: #ffe6e6;
+    transition: 0.3s ease;
+}
+
+/* Campo válido */
+.input-ok {
+    border: 2px solid #06d6a0; /* verde */
+    background-color: #e6ffed;
+    transition: 0.3s ease;
+}
+
+/* Mensaje de error debajo del campo */
+.mensaje-error {
+    color: #e63946;
+    font-size: 0.9em;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Mensaje general del formulario */
+.mensaje-general {
+    font-weight: 600;
+    margin-top: 10px;
+}
+.form-check label {
+    display: inline-block;
+    margin-left: 8px; 
+    vertical-align: middle;
+    cursor: pointer; 
+}
